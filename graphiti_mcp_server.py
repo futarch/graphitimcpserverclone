@@ -18,7 +18,6 @@ from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 from openai import AsyncAzureOpenAI
 from pydantic import BaseModel, Field
-from mcp.tools import ToolDefinition, ParameterDefinition
 
 from graphiti_core import Graphiti
 from graphiti_core.cross_encoder.client import CrossEncoderClient
@@ -1201,75 +1200,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-@mcp.list_tools()
-async def list_tools():
-    return [
-        ToolDefinition(
-            name="add_episode",
-            description="Add an episode to the Graphiti knowledge graph.",
-            parameters={
-                "name": ParameterDefinition(type="string", description="Name of the episode"),
-                "episode_body": ParameterDefinition(type="string", description="Episode content (text, JSON, etc.)"),
-                "group_id": ParameterDefinition(type="string", description="Graph group ID", required=False),
-                "source": ParameterDefinition(type="string", description="Content source type", required=False),
-                "source_description": ParameterDefinition(type="string", description="Optional source context", required=False),
-                "uuid": ParameterDefinition(type="string", description="Optional UUID", required=False),
-            },
-        ),
-        ToolDefinition(
-            name="search_nodes",
-            description="Search for relevant node summaries in the graph.",
-            parameters={
-                "query": ParameterDefinition(type="string", description="Natural language search query"),
-                "group_ids": ParameterDefinition(type="array", description="List of group IDs", required=False),
-                "max_nodes": ParameterDefinition(type="integer", description="Maximum number of results", required=False),
-                "center_node_uuid": ParameterDefinition(type="string", description="Optional central node UUID", required=False),
-                "entity": ParameterDefinition(type="string", description="Optional entity type filter", required=False),
-            },
-        ),
-        ToolDefinition(
-            name="search_facts",
-            description="Search for facts (relationships) in the graph.",
-            parameters={
-                "query": ParameterDefinition(type="string", description="Search query"),
-                "group_ids": ParameterDefinition(type="array", description="List of group IDs", required=False),
-                "max_facts": ParameterDefinition(type="integer", description="Max number of facts", required=False),
-                "center_node_uuid": ParameterDefinition(type="string", description="Central node UUID", required=False),
-            },
-        ),
-        ToolDefinition(
-            name="delete_entity_edge",
-            description="Delete a specific entity edge from the graph.",
-            parameters={
-                "uuid": ParameterDefinition(type="string", description="UUID of the edge"),
-            },
-        ),
-        ToolDefinition(
-            name="delete_episode",
-            description="Delete a specific episode from the graph.",
-            parameters={
-                "uuid": ParameterDefinition(type="string", description="UUID of the episode"),
-            },
-        ),
-        ToolDefinition(
-            name="get_entity_edge",
-            description="Retrieve a specific entity edge from the graph.",
-            parameters={
-                "uuid": ParameterDefinition(type="string", description="UUID of the edge"),
-            },
-        ),
-        ToolDefinition(
-            name="get_episodes",
-            description="Get the most recent episodes for a group.",
-            parameters={
-                "group_id": ParameterDefinition(type="string", description="Group ID", required=False),
-                "last_n": ParameterDefinition(type="integer", description="Number of episodes", required=False),
-            },
-        ),
-        ToolDefinition(
-            name="clear_graph",
-            description="Clear all data from the graph and rebuild indices.",
-            parameters={},
-        ),
-    ]
