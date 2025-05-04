@@ -462,7 +462,7 @@ class GraphitiConfig(BaseModel):
         if args.group_id:
             config.group_id = args.group_id
         else:
-            config.group_id = f'graph_{uuid.uuid4().hex[:8]}'
+            config.group_id = os.getenv("GROUP_ID")
 
         config.use_custom_entities = args.use_custom_entities
         config.destroy_graph = args.destroy_graph
