@@ -23,4 +23,4 @@ EXPOSE 8000
 ENV PYTHONUNBUFFERED=1
 
 # Command to run the application
-CMD ["uv", "run", "graphiti_mcp_server.py"]
+CMD ["uv", "run", "graphiti_mcp_server.py", "--model gpt-4.1-mini", "--transport sse", "--group-id savoir"]
