@@ -1063,31 +1063,6 @@ async def get_episodes(
         return {'error': f'Error getting episodes: {error_msg}'}
 
 
-@mcp.tool()
-async def clear_graph() -> SuccessResponse | ErrorResponse:
-    """Clear all data from the Graphiti knowledge graph and rebuild indices."""
-    global graphiti_client
-
-    if graphiti_client is None:
-        return {'error': 'Graphiti client not initialized'}
-
-    try:
-        # We've already checked that graphiti_client is not None above
-        assert graphiti_client is not None
-
-        # Use cast to help the type checker understand that graphiti_client is not None
-        client = cast(Graphiti, graphiti_client)
-
-        # clear_data is already imported at the top
-        await clear_data(client.driver)
-        await client.build_indices_and_constraints()
-        return {'message': 'Graph cleared successfully and indices rebuilt'}
-    except Exception as e:
-        error_msg = str(e)
-        logger.error(f'Error clearing graph: {error_msg}')
-        return {'error': f'Error clearing graph: {error_msg}'}
-
-
 @mcp.resource('http://graphiti/status')
 async def get_status() -> StatusResponse:
     """Get the status of the Graphiti MCP server and Neo4j connection."""
